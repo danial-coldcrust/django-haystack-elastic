@@ -123,8 +123,8 @@ STATIC_URL = '/static/'
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'ENGINE': 'haystack_elasticsearch5.Elasticsearch5SearchEngine',
         'URL': 'http://127.0.0.1:9201/',
-        'INDEX_NAME': 'haystack',
-    },
+        'INDEX_NAME': 'test_backend',
+    }
 }
