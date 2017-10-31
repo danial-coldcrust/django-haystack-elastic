@@ -124,7 +124,80 @@ STATIC_URL = '/static/'
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'haystack_elasticsearch5.Elasticsearch5SearchEngine',
-        'URL': 'http://127.0.0.1:9201/',
-        'INDEX_NAME': 'test_backend',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'korean',
+        'TYPE_NAME' : 'model',
+        'INCLUDE_SPELLING': True,
+    }
+}
+
+ELASTICSEARCH_DEFAULT_ANALYZER = 'korean_index'
+
+
+ELASTICSEARCH_INDEX_SETTINGS = {
+  'settings': {
+      "analysis": {
+          "analyzer": {
+              "korean_index": {
+                  "type": "custom",
+                  "tokenizer": "mecab_ko_standard_tokenizer"
+              },
+              "korean_query": {
+                  "type": "custom",
+                  "tokenizer": "korean_query_tokenizer"
+              },
+              "ngram_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "standard",
+                  "filter": ["haystack_ngram", "lowercase"]
+              },
+              "edgengram_analyzer": {
+                  "type": "custom",
+                  "tokenizer": "standard",
+                  "filter": ["haystack_edgengram", "lowercase"]
+              }
+          },
+          "tokenizer": {
+              "korean_query_tokenizer": {
+                  "type": "mecab_ko_standard_tokenizer",
+                  "compound_noun_min_length": 100
+              },
+              "haystack_ngram_tokenizer": {
+                  "type": "nGram",
+                  "min_gram": 3,
+                  "max_gram": 15,
+              },
+              "haystack_edgengram_tokenizer": {
+                  "type": "edgeNGram",
+                  "min_gram": 2,
+                  "max_gram": 15,
+                  "side": "front"
+              }
+          },
+          "filter": {
+              "haystack_ngram": {
+                  "type": "nGram",
+                  "min_gram": 3,
+                  "max_gram": 15
+              },
+              "haystack_edgengram": {
+                  "type": "edgeNGram",
+                  "min_gram": 2,
+                  "max_gram": 15
+              }
+          }
+      }
+  },
+    "mappings": {
+        "model": {
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "analyzer": "korean_index",
+                    "analyzer": "edgengram_analyzer",
+
+                }
+            }
+        }
     }
 }

@@ -5,6 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-hello ssibsaeya
+
+    <p>
+    <form action="" method="get">
+        <input type="text" name="q" value="{{ q }}" />
+        <input type="submit" value="검색" class = "btn btn-primary"/>
+    </form>
+
+    </p>
+    {% if results != null %}
+        {{ results }}
+    {% endif %}
+
+
+
 </body>
 </html>
